@@ -1,0 +1,35 @@
+.ant-upload.ant-upload-select-picture-card {
+  background-color: #ffff;
+  border: none !important;
+}
+
+.ant-upload {
+  position: relative;
+}
+
+.ant-upload img {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+}
+
+.icon-overlay {
+  position: absolute;
+  transition: 0.5s ease;
+  opacity: 0;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, -5%);
+  -ms-transform: translate(-50%, -5%);
+}
+.ant-upload:hover img {
+  opacity: 0.8;
+}
+
+.ant-upload:hover .image-overlay,
+.ant-upload:hover .icon-overlay {
+  opacity: 1;
+}
