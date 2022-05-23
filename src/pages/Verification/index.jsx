@@ -17,10 +17,17 @@ const Verification = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [code, setCode] = useState('');
+  const emailFound = location?.state?.email;
+  const dataFoundEmail = location?.state?.data;
   const [countdown, setCountdown] = useState(60);
   const [checkSendAgain, setCheckSendAgain] = useState(false);
-  const phoneNumber = location?.state?.phone;
+  const [email, setEmail] = useState(emailFound);
+  const [token, setToken] = useState(dataFoundEmail);
+
+
   const disabled = useRef(false);
+  console.log('44444444', token)
+  console.log('44444444', email)
 
   const handleChangeCode = (data) => setCode(data);
 
@@ -32,13 +39,14 @@ const Verification = () => {
     disabled.current = true;
     if (code && code.length === 6) {
       const { success } = await axiosPost(API.AUTH.FORGOT_PASSWORD_VERIFY_OTP, {
-        username: phoneNumber,
-        forgot_password_otp: code,
+        email: email,
+        code: code
       });
       if (success) {
         navigate('/forgot-password/reset-password', {
           state: {
-            phone: phoneNumber,
+            email: email,
+            verify: true,
           },
         });
       } else {
@@ -48,48 +56,47 @@ const Verification = () => {
       disabled.current = false;
       ToastTopHelper.error(t('confirm_code_does_not_match'));
     }
-  }, [code, navigate, phoneNumber, t]);
+  }, [code, email, navigate, t]);
 
   const handleSendAgain = useCallback(async () => {
-    if (phoneNumber) {
-      const { success } = await axiosPost(API.AUTH.FORGOT_PASSWORD, {
-        username: phoneNumber,
+    if (email) {
+      const { success, data } = await axiosPost(API.AUTH.FORGOT_PASSWORD, {
+        email: email,
       });
       if (success) {
+        setToken(data?.data)
         setCheckSendAgain(false);
         setCountdown(60);
         ToastTopHelper.success(t('resend_code_successfully'));
-      } else {
-        setCheckSendAgain(true);
-      }
+      } 
     }
-  }, [phoneNumber, t]);
+    setCheckSendAgain(true);
+  }, [email, t]);
 
   useEffect(() => {
-    const timerId = setInterval(() => {
-      setCountdown((prevState) => {
-        if (prevState === 0) {
-          setCheckSendAgain(true);
-        }
-        return prevState === 0 ? prevState : prevState - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timerId);
-  }, [checkSendAgain]);
+    if(token?.isStart) {
+      const timerId = setInterval(() => {
+        setCountdown((prevState) => {
+          if (prevState === 0) {
+            setCheckSendAgain(true);
+          }
+          return prevState === 0 ? prevState : prevState - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timerId);
+    }
+  
+  }, [token?.isStart]);
 
   return (
-    <div>
-      <Row>
-        <Col span={12} style={styles.colRight}>
-          <Row
-            data-testid={TESTID.ROW_VERIFICATION}
-            style={{ cursor: 'pointer' }}
-            onClick={handleGoBack}
-          >
-            <Text style={styles.textBack}>{t('back')}</Text>
-          </Row>
+      <Row style={styles.container}>
+        <Col span={12} style={styles.col}>
           <div style={styles.bodyWrapper}>
             <div style={styles.forgotPassword}>
+            <Text bold onClick={handleGoBack} style={{ paddingTop: 32, paddingBottom: 32, display: 'flex', flexDirection: 'row' }}>
+              <span style={{ paddingRight: 16 }}>{"<"}</span>
+              {t('back')}
+            </Text>
               <Text type="H2" bold>
                 {t('verification')}
               </Text>
@@ -103,7 +110,6 @@ const Verification = () => {
                   onChange={handleChangeCode}
                   numInputs={6}
                   separator={<span style={{ width: '8px' }} />}
-                  isInputNum
                   shouldAutoFocus
                   inputStyle={styles.inputOtp}
                   focusStyle={styles.focusOtpInput}
@@ -134,7 +140,6 @@ const Verification = () => {
           </div>
         </Col>
       </Row>
-    </div>
   );
 };
 

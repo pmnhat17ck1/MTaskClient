@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../../commons/Button';
 import { login } from '../../redux/actions/auth';
@@ -14,34 +14,25 @@ import Input from '@material-ui/core/Input';
 import Text from '../../commons/Text';
 import 'react-toastify/dist/ReactToastify.css';
 import { Col, Row } from 'antd';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
+
 import Colors from '../../configs/Colors';
-import { ToastTopHelper } from '../../utils/utils';
-import { TESTID } from '../../configs/Constant';
 import styles from './style';
 
 const Login = () => {
   const { t } = useTranslation();
-  const location = useLocation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   // eslint-disable-next-line no-shadow
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const handleSubmit = useCallback(() => {
     dispatch(login({ username, password }));
   }, [username, dispatch, password]);
-
-  useEffect(() => {
-    if (location?.state?.id === -1) {
-      // -1 mean change password success
-      ToastTopHelper.success(t('change_password_success'));
-      window.history.replaceState({}, document.title);
-    }
-  }, [isLoggedIn, location, navigate, t]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -67,10 +58,13 @@ const Login = () => {
     navigate('/forgot-password');
   }, [navigate]);
 
+  const handleClickSignup = useCallback(() => {
+   return navigate('/register');
+  }, [navigate]);
+
   return (
-    <div>
-      <Row>
-        <Col span={12} style={styles.colRight}>
+      <Row style={styles.container}>
+        <Col span={12} style={styles.col}>
           <div style={styles.authWrapper}>
             <Text type="H2" style={styles.textLogin} bold>
               {t('sign_in')}
@@ -78,7 +72,7 @@ const Login = () => {
             <div>
               <TextField
                 id="standard-basic"
-                label="Phone number"
+                label="Username"
                 variant="standard"
                 onChange={(e) => setUsername(e.target.value)}
                 style={styles.inputControl}
@@ -106,7 +100,6 @@ const Login = () => {
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
-                        data-testid={TESTID.ICON_BUTTON_SHOW_PASSWORD}
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
                         onMouseDown={handleMouseDownPassword}
@@ -118,7 +111,6 @@ const Login = () => {
               </FormControl>
             </div>
             <div
-              data-testid={TESTID.ICON_BUTTON_LOGIN}
               onClick={handleClickForgotPassword}
               style={styles.wrapRememberMe}
             >
@@ -127,7 +119,6 @@ const Login = () => {
               </Text>
             </div>
             <Button
-              testID={TESTID.LOGIN_BUTTON}
               style={styles.button}
               type="primary"
               onClick={handleSubmit}
@@ -137,12 +128,11 @@ const Login = () => {
             />
             <div style={styles.wrapSignUp}>
               <div> {t('dont_have_account')}</div>
-              <div style={styles.textSignUp}> {t('sign_up')}</div>
+              <div style={styles.textSignUp} onClick={handleClickSignup}> {t('sign_up')}</div>
             </div>
           </div>
         </Col>
       </Row>
-    </div>
   );
 };
 const mapStateToProps = (state) => {

@@ -2,10 +2,13 @@
 import React, { memo } from 'react';
 import { Input } from 'antd';
 import styles from './styles';
+import Text from '../Text';
 
 const LabelInput = ({
   isRequireLabel = true,
   textLabel = '',
+  typeLabel = 'Label',
+  styleLabel,
   onChange,
   refInput,
   value,
@@ -13,6 +16,7 @@ const LabelInput = ({
 }) => {
   return (
     <div style={styles.labelInput}>
+      <Text type={typeLabel} style={styleLabel}>{textLabel}</Text>
       <Input
         placeholder={placeholder}
         value={value}

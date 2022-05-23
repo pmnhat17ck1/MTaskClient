@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import API from '../../configs/API';
-import { axiosPatch } from '../../utils/apis/axios';
+import { axiosPost } from '../../utils/apis/axios';
 import { logout } from '../../redux/actions/auth';
 import { Input, Modal } from 'antd';
 import Button from '../../commons/Button';
@@ -61,10 +61,10 @@ const ChangePassword = () => {
   };
 
   const handleChange = useCallback(async () => {
-    const { success } = await axiosPatch(API.AUTH.CHANGE_PASSWORD, {
-      old_password: currentPassword,
-      new_password: newPassword,
-      confirm_password: confirmPassword,
+    const { success } = await axiosPost(API.USER.CHANGE_PASSWORD, {
+      oldPassword: currentPassword,
+      password: newPassword,
+      passwordConfirm: confirmPassword,
     });
     if (success) {
       setIsModalVisible(true);
@@ -76,32 +76,8 @@ const ChangePassword = () => {
   return (
     <>
       <div style={styles.wrapper}>
-        <div style={styles.breadcrumb}>
-          <div style={styles.row}>
-            <div
-              data-testid={TESTID.BUTTON_GOBACK_CHANGE_PASSWORD}
-              onClick={goBack}
-              style={{ ...styles.marginRight, ...{ cursor: 'pointer' } }}
-            >
-              {/* <img src={BackIcon} /> */}
-            </div>
-            <Text type="H1" bold>
-              {t('change_password')}
-            </Text>
-          </div>
-          <div style={styles.row}>
-            <Text style={styles.marginRight} color={Colors.Grey8}>
-              {t('profile')}
-            </Text>
-            {/* <img src={RightArrow} style={styles.marginRight} /> */}
-            <Text style={styles.marginRight} color={Colors.Grey7}>
-              {t('change_password')}
-            </Text>
-          </div>
-        </div>
         <div style={styles.body}>
           <div style={styles.widthBody}>
-            {/* <img src={LogoLock} style={styles.logoLock} /> */}
             <Text type="H2" bold>
               {t('change_password')}
             </Text>
@@ -140,7 +116,6 @@ const ChangePassword = () => {
         onOk={doLogout}
         footer={[
           <Button
-            testID={TESTID.BUTTON_OK}
             key="submit"
             type="primary"
             onClick={doLogout}

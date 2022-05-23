@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -17,9 +17,15 @@ const ResetPassword = () => {
   const location = useLocation();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const phoneNumber = location.state.phone;
+  const email = location.state.email;
+  const verify = location.state.verify;
   const disabled = useRef(false);
-
+  useEffect(()=>{
+    if(verify!==true) {
+      navigate('/login');
+    }
+  },[navigate, verify])
+  
   const handleGoBack = useCallback(() => {
     navigate('/login');
   }, [navigate]);
@@ -28,10 +34,12 @@ const ResetPassword = () => {
     disabled.current = true;
     if (newPassword && newPassword === confirmPassword) {
       const { success } = await axiosPost(API.AUTH.RESET_PASSWORD, {
-        username: phoneNumber,
+        email: email,
         password: newPassword,
+        passwordConfirm: confirmPassword,
       });
       if (success) {
+        ToastTopHelper.success(t('resset_password_successfully'));
         navigate('/login', {
           state: {
             id: -1,
@@ -44,7 +52,7 @@ const ResetPassword = () => {
       disabled.current = false;
       ToastTopHelper.error(t('confirm_password_does_not_match'));
     }
-  }, [confirmPassword, navigate, newPassword, phoneNumber, t]);
+  }, [confirmPassword, email, navigate, newPassword, t]);
 
   const listInputPassword = useMemo(() => {
     return [
@@ -64,18 +72,14 @@ const ResetPassword = () => {
   }, [t, newPassword, confirmPassword]);
 
   return (
-    <div>
-      <Row>
-        <Col span={12} style={styles.colRight}>
-          <Row
-            style={{ cursor: 'pointer' }}
-            onClick={handleGoBack}
-            data-testid={TESTID.ROW_RESET_PASSWORD}
-          >
-            <Text style={styles.textBack}>{t('back')}</Text>
-          </Row>
+      <Row style={styles.container}>
+        <Col span={12} style={styles.col}>
           <div style={styles.bodyWrapper}>
             <div style={styles.forgotPassword}>
+            <Text bold onClick={handleGoBack} style={{ paddingTop: 32, paddingBottom: 32, display: 'flex', flexDirection: 'row' }}>
+              <span style={{ paddingRight: 16 }}>{"<"}</span>
+              {t('back')}
+            </Text>
               <Text type="H2" bold>
                 {t('change_password')}
               </Text>
@@ -110,7 +114,6 @@ const ResetPassword = () => {
           </div>
         </Col>
       </Row>
-    </div>
   );
 };
 

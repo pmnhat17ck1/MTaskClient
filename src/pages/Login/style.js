@@ -1,6 +1,16 @@
 import Colors from '../../configs/Colors';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: "linear-gradient(to right, #ACB6E5, #74ebd5)",
+    height:'100%',
+    width: '100%',
+  },
+
   authWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -9,6 +19,8 @@ export default {
     top: '50%',
     left: '50%',
     padding: '90px 40px 120px',
+    background: 'white',
+    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
   },
   textLogin: {
     paddingBottom: 50,
@@ -59,41 +71,9 @@ export default {
     marginLeft: 5,
     fontWeight: 'bold',
   },
-  colLeft: {
-    backgroundSize: '100% 100%',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-  },
-  colRight: {
+  col: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
-    width: '50%',
-  },
-  logoCompany: {
-    marginTop: 30,
-    marginLeft: 25,
-    display: 'flex',
-    justifyContent: 'flex-start',
-  },
-  textWelcomeCompany: {
-    width: '100%',
-    height: '80vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  wrapTextWelcome: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  rectangle: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: 55,
-  },
-  imageVisibility: {
-    height: 25,
   },
 };

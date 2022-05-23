@@ -8,7 +8,7 @@ import Colors from '../configs/Colors';
 
 export const setAxiosDefaultAuthToken = (token) => {
   axios.defaults.headers.common.Accept = 'application/json';
-  axios.defaults.headers.common.Authorization = `Token ${token}`;
+  axios.defaults.headers.common.Authorization = `token ${token}`;
   reactLocalStorage.set('token', token);
 };
 
@@ -178,3 +178,14 @@ export const getDiffTime = (date, now, comparableType) => {
       return durationTime;
   }
 };
+export const getBase64 = (file) => {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    console.log(reader.result);
+  };
+  reader.onerror = function (error) {
+    console.log('Error: ', error);
+  };
+}
+

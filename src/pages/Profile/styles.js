@@ -1,5 +1,6 @@
 import Colors from '../../configs/Colors';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   body: {
     width: '100%',
@@ -53,9 +54,16 @@ export default {
     borderRadius: 5,
   },
   widthBody: {
-    width: '45%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems:'center',
+    paddingTop:120,
+    width: '50%',
+    margin: 'auto'
   },
   profileItem: {
+    display:"flex",
+    flexDirection: 'column',
     width: '100%',
     marginTop: 30,
   },

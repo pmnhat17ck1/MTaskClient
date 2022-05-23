@@ -13,12 +13,13 @@ const parseErrorResponse = (error) => {
     error.response.data instanceof Object
   ) {
     data = error.response.data;
-    const firstKey = Object.keys(error.response.data)[0];
+    const firstKey = Object.keys(error.response.data)[1];
     message = error.response.data[firstKey];
+
 
     if (message instanceof Array) {
       // eslint-disable-next-line prefer-destructuring
-      message = message[0];
+      message = message[0]?.msg;
     }
   } else {
     message = error.message;

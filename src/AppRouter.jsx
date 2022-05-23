@@ -13,7 +13,7 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import Verification from './pages/Verification';
 import ResetPassword from './pages/ResetPassword';
-
+import Register from './pages/Register';
 import Page404 from './pages/Page404';
 
 
@@ -22,7 +22,7 @@ const AppRouter = () => {
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   if (isLoggedIn) {
-    axios.defaults.headers.common.Authorization = `Token ${reactLocalStorage.get(
+    axios.defaults.headers.common.Authorization = `token ${reactLocalStorage.get(
       'token'
     )}`;
   }
@@ -41,6 +41,11 @@ const AppRouter = () => {
           path="/forgot-password/reset-password"
           exact
           element={<ResetPassword />}
+        />
+         <Route
+          path="/register"
+          exact
+          element={<Register />}
         />
 
         <Route element={<PrivateRoute />}>

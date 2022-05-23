@@ -1,17 +1,15 @@
-import { LOGIN, LOGOUT } from '../../redux/actions/auth';
+import { LOGIN, LOGOUT, UPDATE_PERSONAL_INFO } from '../../redux/actions/auth';
 import { initData } from '../../utils/initData';
 import { removeAxiosDefaultAuthToken } from '../../utils/utils';
 
 const initialState = {
   errorMsg: '',
-
   isLoggedIn: false,
   account: {
     token: '',
     user: {},
   },
   isLoggingIn: false,
-  units: [],
 };
 
 // eslint-disable-next-line default-param-last
@@ -26,14 +24,20 @@ export default (state = initialState, action) => {
       };
 
     case LOGIN.SUCCESS:
-      initData(action.data || action.params);
-      return {
-        ...state,
-        isLoggedIn: true,
-        isLoggingIn: false,
-        account: action.data || action.params,
-      };
-
+      {
+        const result = (action.data || action.params)
+        initData(result?.data?.accessToken);
+        return {
+          ...state,
+          isLoggedIn: true,
+          isLoggingIn: false,
+          account: {
+            token: result?.data?.accessToken,
+            refreshToken: result?.data?.refreshToken,
+            user: {...result?.data}
+          },
+        };
+      }
     case LOGIN.FAIL:
       return {
         ...state,
@@ -41,12 +45,17 @@ export default (state = initialState, action) => {
         isLoggingIn: false,
         errorMsg: action.result.message,
       };
-
+    case UPDATE_PERSONAL_INFO:
+      return {
+        ...state,
+        account: {
+          ...state?.account,
+          user: {...state?.account?.user, isActive: action?.data?.isActive, avatar: action?.data?.avatar, phone_number: action?.data?.phone_number, email: action?.data?.email}
+        },
+      }
     case LOGOUT:
       removeAxiosDefaultAuthToken();
       return initialState;
-
-
     default:
       return state;
   }

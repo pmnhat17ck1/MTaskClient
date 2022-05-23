@@ -11,6 +11,7 @@ const flexNoWrap = {
   flexWrap: 'nowrap',
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   header: {
     width: '100%',
@@ -25,17 +26,16 @@ export default {
     alignItems: 'center',
     paddingTop: 6,
     paddingBottom: 6,
+    boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
   },
   divider: {
     margin: 0,
     padding: 0,
   },
   textColorGreen: {
-    marginLeft: 10,
-    marginTop: 3,
     fontWeight: 'bold',
     fontSize: 16,
-    color: Colors.Green7,
+    color: "#2684FF",
   },
   textColorGray: {
     marginLeft: 10,
@@ -45,10 +45,10 @@ export default {
     color: Colors.Gray23,
   },
   imageProfile: {
-    height: 45,
-    width: 45,
-    marginLeft: 40,
-    marginRight: 40,
+    height: 35,
+    width: 35,
+    marginLeft: 35,
+    marginRight: 35,
     cursor: 'pointer',
     backgroundColor: Colors.White,
     borderRadius: 50,
@@ -73,11 +73,13 @@ export default {
   },
   textProfile: {
     fontSize: 16,
+    marginLeft: 8,
     marginBottom: 8,
   },
   textSignOut: {
     fontSize: 16,
     marginTop: 8,
+    marginLeft: 8,
     marginBottom: 8,
   },
   headerRight: {
@@ -86,10 +88,24 @@ export default {
   headerLeft: {
     ...flexRowCenter,
   },
+  headerCenter:{
+    ...flexRowCenter,
+    height:40, width:'auto'
+  },
+  buttonDisable:{
+    marginLeft: 16,
+    backgroundColor: Colors.Red5,
+  },
   headerIcon: {
     marginLeft: 26,
   },
   flexNoWrap: {
     ...flexNoWrap,
   },
+  subMenu: {
+    backgroundColor: Colors.White,
+    boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+    padding: 6,
+    cursor: 'pointer'
+  }
 };

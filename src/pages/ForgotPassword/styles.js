@@ -1,9 +1,19 @@
 import Colors from '../../configs/Colors';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  colRight: {
-    height: '100vh',
-    padding: '45px 40px 120px',
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: "linear-gradient(to right, #ACB6E5, #74ebd5)",
+    height:'100%',
+    width: '100%',
+  },
+  col: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textBack: {
     fontSize: 16,
@@ -14,10 +24,13 @@ export default {
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    height: '86%',
+    height: 'auto',
   },
   forgotPassword: {
-    width: 405,
+    width: '60%',
+    padding: '16px 40px 120px',
+    background: 'white',
+    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
   },
 
   toGetVerification: {

@@ -17,80 +17,69 @@ import styles from './styles';
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
   const disabled = useRef(false);
 
   const handleGoBack = useCallback(() => {
-    navigate(-1);
+    navigate('/login');
   }, [navigate]);
 
   const handleClickSend = useCallback(async () => {
     disabled.current = true;
-    if (phoneNumber && isValidPhoneNumber(phoneNumber)) {
-      const { success } = await axiosPost(API.AUTH.FORGOT_PASSWORD, {
-        username: phoneNumber,
+    const { success, data } = await axiosPost(API.AUTH.FORGOT_PASSWORD, {
+      email: email,
+    });
+    if (success) {
+      navigate('/forgot-password/verification', {
+        state: {
+          email: email,
+          data: data?.data,
+        },
       });
-      if (success) {
-        navigate('/forgot-password/verification', {
-          state: {
-            phone: phoneNumber,
-          },
-        });
-      } else {
-        disabled.current = false;
-      }
     } else {
       disabled.current = false;
-      ToastTopHelper.error(t('enter_the_correct_phone_number'));
     }
-  }, [navigate, phoneNumber, t]);
+  }, [email, navigate]);
 
   return (
-    <div>
-      <Row>
-        <Col span={12} style={styles.colRight}>
-          <Row
-            data-testid={TESTID.ROW_FORGOT_PASSWORD}
-            style={{ cursor: 'pointer' }}
-            onClick={handleGoBack}
-          >
-            {/* <img src={BackIconBlack} /> */}
-            <Text style={styles.textBack}>{t('back')}</Text>
-          </Row>
-          <div style={styles.bodyWrapper}>
-            <div style={styles.forgotPassword}>
-              <Text type="H2" bold>
-                {t('forgot_password')}
-              </Text>
-              <Text style={styles.toGetVerification}>
-                {t('to_get_a_verification')}
-              </Text>
-              <TextField
-                id="outlined-number"
-                label="Phone number"
-                variant="standard"
-                type="number"
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                style={styles.inputControl}
-                fullWidth
-                InputLabelProps={{
-                  style: { color: Colors.Gray6 },
-                }}
-              />
-              <Button
-                testID={TESTID.FORGOT_PASSWORD_BUTTON}
-                style={styles.button}
-                type={!disabled.current ? 'primary' : 'disabled'}
-                onClick={handleClickSend}
-                title={t('send')}
-                variant="contained"
-                disableRipple
-              />
-            </div>
+    <Row style={styles.container}>
+      <Col span={12} style={styles.col}>
+        <div style={styles.bodyWrapper}>
+          <div style={styles.forgotPassword}>
+            <Text bold onClick={handleGoBack} style={{ paddingTop: 32, paddingBottom: 32, display: 'flex', flexDirection: 'row' }}>
+              <span style={{ paddingRight: 16 }}>{"<"}</span>
+              {t('back')}
+            </Text>
+            <Text type="H2" bold>
+              {t('forgot_password')}
+            </Text>
+            <Text style={styles.toGetVerification}>
+              {t('to_get_a_verification')}
+            </Text>
+            <TextField
+              id="outlined-number"
+              label="Email"
+              variant="standard"
+              onChange={(e) => setEmail(e.target.value)}
+              style={styles.inputControl}
+              fullWidth
+              InputLabelProps={{
+                style: { color: Colors.Gray6 },
+              }}
+            />
+            <Button
+              testID={TESTID.FORGOT_PASSWORD_BUTTON}
+              style={styles.button}
+              type={!disabled.current ? 'primary' : 'disabled'}
+              onClick={handleClickSend}
+              title={t('send')}
+              variant="contained"
+              disableRipple
+            />
           </div>
-        </Col>
-      </Row>
-    </div>
+        </div>
+      </Col>
+    </Row>
   );
 };
 

@@ -1,5 +1,5 @@
 export default {
-  Primary: '#00979D',
+  Primary: '#2684FF',
   Secondary: '#F08229',
   Text: '#363636',
   Golden: '#b2973f',
