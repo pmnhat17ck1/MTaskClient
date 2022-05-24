@@ -29,6 +29,9 @@ export default makeStyles(() => ({
     display: 'flex',
     flexDirection: 'column',
   },
+  active:{
+    background: Colors.Blue4
+  },
   deleteGroup: {
     flex:1,
     width: 'auto',

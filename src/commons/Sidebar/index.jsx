@@ -1,5 +1,4 @@
 import React, { memo, useState, useEffect, useCallback, useMemo } from 'react';
-import { Typography, Menu } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useStyles, { styles } from './styles';
 import { Button } from '@material-ui/core';
@@ -7,7 +6,7 @@ import Text from '../Text'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import API from '../../configs/API';
-import { axiosPost, axiosGet, axiosPut ,axiosDelete } from '../../utils/apis/axios';
+import { axiosPost, axiosGet, axiosPut, axiosDelete } from '../../utils/apis/axios';
 import { ToastTopHelper } from '../../utils/utils';
 import { Modal } from 'antd';
 import LabelInput from '../LabelInput'
@@ -23,8 +22,7 @@ const SideBar = () => {
   const [groups, setGroups] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [titleModal, setTitleModal] = useState('');
-
-  const [dataGroup, setDataGroup] = useState();
+  const [isActive, setIsActive] = useState({});
   const [dataGroupTemp, setDataGroupTemp] = useState();
 
 
@@ -36,7 +34,7 @@ const SideBar = () => {
   const getOwnerGroup = useCallback(async () => {
     const { success, data } = await axiosGet(API.GROUP.OWNER);
     if (success) {
-      setGroups((data?.data).sort(function(a, b){return b - a}))
+      setGroups((data?.data).sort(function (a, b) { return b - a }))
     }
   }, [])
   useEffect(() => {
@@ -56,6 +54,7 @@ const SideBar = () => {
       getOwnerGroup()
     }
   }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const inforGroup = (item) => {
     setIsModalVisible(true);
     setTitleModal('Information group')
@@ -74,6 +73,14 @@ const SideBar = () => {
         return
     }
   }
+  const activeGroup = useCallback((item) => {
+    setIsActive(item)
+    navigate('/', {
+      state: {
+        group: item
+      }
+    })
+  }, [navigate])
   const handleOk = useCallback(async (type) => {
     setIsModalVisible(false);
     if (titleModal?.includes('Information group')) {
@@ -82,7 +89,7 @@ const SideBar = () => {
         sub_title: dataGroupTemp?.sub_title,
       });
       if (success) {
-        setDataGroup(data?.data)
+        setDataGroupTemp(data?.data)
         getOwnerGroup()
         ToastTopHelper.success(t('Group update successfully'));
       }
@@ -93,13 +100,15 @@ const SideBar = () => {
       sub_title: dataGroupTemp?.sub_title,
     });
     if (success) {
-      setDataGroup(data?.data)
+      setDataGroupTemp(data?.data)
       getOwnerGroup()
       ToastTopHelper.success(t('Create group successfully'));
     }
   }, [dataGroupTemp?.id, dataGroupTemp?.sub_title, dataGroupTemp?.title, getOwnerGroup, t, titleModal]);
-  const CurrentGroup = ({ item, index }) => {
-    return <Button className={classes.currentGroup}>
+
+  const CurrentGroup = useCallback(({ item, index }) => {
+    const isActives = isActive?.id === item?.id
+    return <Button className={[classes.currentGroup, isActives && classes.active]} onClick={() => activeGroup(item, index)}>
       <div className={classes.imgCurrentGroup}>
         <img width={50} height={50} src={no_group} alt={'noGroup'} />
       </div>
@@ -121,7 +130,7 @@ const SideBar = () => {
       </Button>
     </Button>
 
-  }
+  }, [activeGroup, classes.active, classes.buttonEdit, classes.contentCurrentGroup, classes.currentGroup, classes.imgCurrentGroup, classes.textCurrentGroup, inforGroup, isActive])
   return (
     <div className={classes.wrapper}>
       <div className={classes.sideBar}>
