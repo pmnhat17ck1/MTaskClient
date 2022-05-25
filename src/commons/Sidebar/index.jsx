@@ -11,26 +11,23 @@ import { ToastTopHelper } from '../../utils/utils';
 import { Modal } from 'antd';
 import LabelInput from '../LabelInput'
 import no_group from '../../images/no-group.png'
+import { taskGroup } from '../../redux/actions/dashboard';
+
 
 
 const SideBar = () => {
   const classes = useStyles();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const groupActive = useSelector((state) => state.dashboard.group);
+  const dispatch =useDispatch()
   const { t } = useTranslation();
-
   const [groups, setGroups] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [titleModal, setTitleModal] = useState('');
-  const [isActive, setIsActive] = useState({});
+  const [isActive, setIsActive] = useState(groupActive||{});
   const [dataGroupTemp, setDataGroupTemp] = useState();
-
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-
   const getOwnerGroup = useCallback(async () => {
     const { success, data } = await axiosGet(API.GROUP.OWNER);
     if (success) {
@@ -75,12 +72,8 @@ const SideBar = () => {
   }
   const activeGroup = useCallback((item) => {
     setIsActive(item)
-    navigate('/', {
-      state: {
-        group: item
-      }
-    })
-  }, [navigate])
+    dispatch(taskGroup(item))
+  }, [dispatch])
   const handleOk = useCallback(async (type) => {
     setIsModalVisible(false);
     if (titleModal?.includes('Information group')) {

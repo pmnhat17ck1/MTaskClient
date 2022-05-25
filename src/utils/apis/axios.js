@@ -24,9 +24,9 @@ const parseErrorResponse = (error) => {
   } else {
     message = error.message;
   }
-
+  const envNode= process.env.NODE_ENV || 'production'
   // NOTE: Hotfix for demo in this afternoon
-  if (process.env.NODE_ENV !== 'production') {
+  if (envNode !== 'production') {
     ToastTopHelper.error(message);
   } else {
     if (

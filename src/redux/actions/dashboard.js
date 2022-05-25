@@ -29,3 +29,8 @@ export const taskList = (data) => ({
   type: TASK_LIST,
   data,
 });
+export const TASK_GROUP = 'TASK_GROUP';
+export const taskGroup = (data) => ({
+  type: TASK_GROUP,
+  data,
+});

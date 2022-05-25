@@ -1,4 +1,4 @@
-const API_ROOT = process.env.REACT_APP_API_URL;
+const API_ROOT = process.env.REACT_APP_API_URL || 'https://mtask20850224.herokuapp.com/api';
 const API = {
   AUTH: {
     LOGIN: `${API_ROOT}/auth/login`,
@@ -9,6 +9,8 @@ const API = {
     RESET_PASSWORD: `${API_ROOT}/forgetPassword/resetPassword`,
   },
   USER:{
+    NOTI: `${API_ROOT}/users/noti`,
+    DELETE_NOTI: `${API_ROOT}/users/notiDeleteAll`,
     GETALL: `${API_ROOT}/users`,
     DETAIL: (id) => `${API_ROOT}/users/${id}/detail`,
     UPDATE_PROFILE:(id)=> `${API_ROOT}/users/${id}/detail`,

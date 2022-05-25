@@ -67,7 +67,7 @@ export const styles = {
     color: Colors.Black,
   },
   task: {
-     display: 'flex', flexDirection: 'column', width: 370,marginLeft:6, marginRight:6,  boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px", height: 700, padding: 12
+     display: 'flex', flexDirection: 'column', width: 370,marginLeft:6, marginRight:6,  boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px", height: 'auto', padding: 12
   },
   createTask:{
      width: 250, paddingTop: 8, paddingBottom: 8, background: "#2684FF", boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", 
@@ -75,9 +75,6 @@ export const styles = {
   card:{
     display: 'flex',
     flexDirection: 'column',
-    height: 200,
-    marginBottom: 16,
-    padding:6,
-    boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+    height: 'auto',
   }
 };
