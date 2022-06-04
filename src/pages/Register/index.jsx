@@ -45,7 +45,7 @@ const Register = () => {
       });
       if (success) {
         navigate('/login');
-        ToastTopHelper.success(t('register_successfuly'));
+        ToastTopHelper.success(t('register_successfully'));
       } 
       disabled.current = false;
   }, [cccd, email, navigate, password, phoneNumber, t, username]);

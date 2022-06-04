@@ -1,5 +1,6 @@
 const API_ROOT = process.env.REACT_APP_API_URL || 'https://mtask20850224.herokuapp.com/api';
 const API = {
+  DASHBOARD: `${API_ROOT}/dashboard`,
   AUTH: {
     LOGIN: `${API_ROOT}/auth/login`,
     REGISTER: `${API_ROOT}/auth/register`,

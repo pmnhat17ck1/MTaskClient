@@ -36,7 +36,6 @@ const Layout = () => {
       });
       if (success) {
         ToastTopHelper.success(t('activation_successfully'));
-        console.log('666666666', data?.data)
         dispatch(updateProfileInfo(data?.data?.dataValues))
       }
     }

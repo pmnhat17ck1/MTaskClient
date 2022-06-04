@@ -98,7 +98,7 @@ const Header = ({ setIsModalVisible, setIsSend, getCode }) => {
   const onClickActive = () => {
     !!setIsModalVisible && setIsModalVisible(true)
     !!setIsSend && setIsSend(true)
-    !!getCode && getCode()
+    !!getCode && getCode('')
   }
   const onClickDeleteAll = async () => {
     if(noti.length>0) {

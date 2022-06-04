@@ -62,7 +62,7 @@ const Dashboard = () => {
         due_date: dataTaskTemp?.due_date,
         typeId: dataTaskTemp?.typeId,
         stepId: dataTaskTemp?.stepId,
-        priorityId: dataTaskTemp?.priorityId,
+        priorityId: dataTaskTemp?.priorityId,  
       });
       if (success) {
         getAllTask()
@@ -171,26 +171,9 @@ const Dashboard = () => {
     setIsModalVisible(false);
   }
   const getDataHas = async () => {
-    const result1 = await axiosGet(API.TYPE.GETALL);
-    if (result1?.success) {
-      setDataServer((prev) => ({ ...prev, types: result1?.data?.data }))
-    }
-    const result2 = await axiosGet(API.STEP.GETALL);
-    if (result2?.success) {
-      setDataServer((prev) => ({ ...prev, steps: result2?.data?.data }))
-
-    }
-    const result3 = await axiosGet(API.PRIORITY.GETALL);
-    if (result3?.success) {
-      setDataServer((prev) => ({ ...prev, priorities: result3?.data?.data }))
-    }
-    const result4 = await axiosGet(API.USER.GETALL);
-    if (result4?.success) {
-      setDataServer((prev) => ({ ...prev, users: result4?.data?.data }))
-    }
-    const result5 = await axiosGet(API.TASK.GETALL);
-    if (result5?.success) {
-      setDataServer((prev) => ({ ...prev, tasks: result5?.data?.data }))
+    const { success , data } = await axiosGet(API.DASHBOARD);
+    if (success) {
+      setDataServer((prev) => ({ ...prev,...data?.data }))
     }
   }
   const taskTodo = useMemo(() => {
