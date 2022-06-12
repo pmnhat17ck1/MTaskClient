@@ -10,6 +10,7 @@ import LabelInput from '../../commons/LabelInput'
 import useStyles, { styles } from './styles';
 import { useSelector } from 'react-redux';
 import { Modal, Select, DatePicker } from 'antd';
+import Card from './Components/Card'
 const { Option } = Select;
 
 
@@ -62,7 +63,7 @@ const Dashboard = () => {
         due_date: dataTaskTemp?.due_date,
         typeId: dataTaskTemp?.typeId,
         stepId: dataTaskTemp?.stepId,
-        priorityId: dataTaskTemp?.priorityId,  
+        priorityId: dataTaskTemp?.priorityId,
       });
       if (success) {
         getAllTask()
@@ -171,9 +172,9 @@ const Dashboard = () => {
     setIsModalVisible(false);
   }
   const getDataHas = async () => {
-    const { success , data } = await axiosGet(API.DASHBOARD);
+    const { success, data } = await axiosGet(API.DASHBOARD);
     if (success) {
-      setDataServer((prev) => ({ ...prev,...data?.data }))
+      setDataServer((prev) => ({ ...prev, ...data?.data }))
     }
   }
   const taskTodo = useMemo(() => {
@@ -192,52 +193,8 @@ const Dashboard = () => {
   const onClickItem = (item) => {
     setIsModalVisible(true)
     setTitleModal('Edit Task')
-    setDataTaskTemp((prev)=>({...prev, ...item}))
+    setDataTaskTemp((prev) => ({ ...prev, ...item }))
   }
-
-  const Card = useCallback(({ item }) => {
-    return <Button  onClick={()=>onClickItem(item)} style={{ marginBottom: 16, marginTop: 12,
-      boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",}}>
-      <div style={styles.card}>
-      <Text type="H2" style={{paddingBottom:16}} bold>{item?.name}</Text>
-      <div style={{ display: 'flex',alignItems: 'center', flexDirection: 'row', width: '100%' }}>
-        <Text type="H4" bold style={{ paddingRight: 8 }}>Description:</Text>
-        <Text type="H4"  >{item?.description}</Text>
-      </div>
-      <div style={{ display: 'flex',alignItems: 'center', flexDirection: 'row', width: '100%' }}>
-        <Text type="H4" bold style={{ paddingRight: 8 }}>reporter:</Text>
-        <Text type="H4" > {dataServer?.users?.filter((item1) => item1?.id == item?.reporter)[0]?.username}</Text>
-      </div>
-      <div style={{ display: 'flex',alignItems: 'center', flexDirection: 'row', width: '100%' }}>
-        <Text type="H4" bold style={{ paddingRight: 8 }}>Assignee:</Text>
-        <Text type="H4" >{dataServer?.users?.filter((item1) => item1?.id == item?.assignee)[0]?.username}</Text>
-      </div>
-      <div style={{ display: 'flex',alignItems: 'center', flexDirection: 'row', width: '100%' }}>
-        <Text type="H4" bold style={{ paddingRight: 8 }}>Link issue:</Text>
-        <Text type="H4">{item?.link_issue}</Text>
-      </div>
-      <div style={{ display: 'flex',alignItems: 'center', flexDirection: 'row', width: '100%' }}>
-        <Text type="H4" bold style={{ paddingRight: 8 }}>Due date:</Text>
-        <Text type="H4">{item?.due_date}</Text>
-      </div>
-      <div style={{ display: 'flex',alignItems: 'center' , flexDirection: 'row', width: '100%' }}>
-        <Text type="H4" bold style={{ paddingRight: 8 }}>Type:</Text>
-        <div style={{ border: 1, backgroundColor: item?.typeId === 1 ? "blue" : "red", paddingLeft: 12, paddingRight: 12 }}>
-          <Text type="H4" color="white" bold>
-            {
-              dataServer?.types?.filter((item1) => item1?.id === item?.typeId)[0]?.name
-            }
-          </Text>
-        </div>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-        <Text type="H4" bold style={{ paddingRight: 8 }}>Priority:</Text>
-        <Text type="H4" bold style={{ color: item?.priorityId === 1 ? "blue" : item?.priorityId === 2 ? "pink" : "red"}}>{dataServer?.priorities?.filter((item1) => item1?.id === item?.priorityId)[0]?.name}</Text>
-      </div>
-      </div>
-   
-    </Button>
-  }, [dataServer?.priorities, dataServer?.types, dataServer?.users])
 
   useEffect(() => {
     getDataHas()
@@ -247,7 +204,7 @@ const Dashboard = () => {
     if (groupActive) {
       getAllTask()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupActive])
 
 
@@ -262,7 +219,7 @@ const Dashboard = () => {
           <Text type="H4" bold>To do</Text>
           <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
             {taskTodo?.length > 0 && taskTodo?.map((item, index) => {
-              return <Card item={item} key={index.toString()}></Card>
+              return <Card item={item} key={index.toString()} onClickItem={() => onClickItem(item)} dataServer={dataServer}></Card>
             })}
           </div>
 
@@ -271,7 +228,7 @@ const Dashboard = () => {
           <Text type="H4" bold>Proccessing</Text>
           <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
             {taskProcessing?.length > 0 && taskProcessing?.map((item, index) => {
-              return <Card item={item} key={index.toString()}></Card>
+              return <Card item={item} key={index.toString()} onClickItem={() => onClickItem(item)} dataServer={dataServer}></Card>
             })}
           </div>
         </div>
@@ -279,7 +236,7 @@ const Dashboard = () => {
           <Text type="H4" bold>Review</Text>
           <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
             {taskReview?.length > 0 && taskReview?.map((item, index) => {
-              return <Card item={item} key={index.toString()}></Card>
+              return <Card item={item} key={index.toString()} onClickItem={() => onClickItem(item)} dataServer={dataServer}></Card>
             })}
           </div>
         </div>
@@ -287,7 +244,7 @@ const Dashboard = () => {
           <Text type="H4" bold>Done</Text>
           <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column' }}>
             {taskDone?.length > 0 && taskDone?.map((item, index) => {
-              return <Card item={item} key={index.toString()}></Card>
+              return <Card item={item} key={index.toString()} onClickItem={() => onClickItem(item)} dataServer={dataServer}></Card>
             })}
           </div>
 
@@ -306,6 +263,8 @@ const Dashboard = () => {
                     <div style={{ display: 'flex' }}>
                       <Text type="H4" style={{ paddingRight: 16 }}>{item.textLabel}: </Text>
                       <Select
+                        defaultValue={dataTaskTemp?.assignee}
+                        value={dataTaskTemp?.assignee}
                         onChange={(e) => onChangeInput(e, 'reporter')}
                         style={{ flex: 1, width: 'auto' }}
                       >
@@ -327,6 +286,8 @@ const Dashboard = () => {
                     <div style={{ display: 'flex' }}>
                       <Text type="H4" style={{ paddingRight: 16 }}>{item.textLabel}: </Text>
                       <Select
+                        defaultValue={dataTaskTemp?.assignee}
+                        value={dataTaskTemp?.assignee}
                         onChange={(e) => onChangeInput(e, 'assignee')}
                         style={{ flex: 1, width: 'auto' }}
                       >
@@ -347,7 +308,7 @@ const Dashboard = () => {
                     <div style={{ display: 'flex' }}>
                       <Text type="H4" style={{ paddingRight: 16 }}>{item.textLabel}: </Text>
                       <DatePicker
-                      
+
                         format={['DD/MM/YYYY']}
                         allowClear
                         style={styles.datePicker}
@@ -376,6 +337,8 @@ const Dashboard = () => {
                     <div style={{ display: 'flex' }}>
                       <Text type="H4" style={{ paddingRight: 16 }}>{item.textLabel}: </Text>
                       <Select
+                        defaultValue={dataTaskTemp?.typeId}
+                        value={dataTaskTemp?.typeId}
                         onChange={(e) => onChangeInput(e, 'typeId')}
                         style={{ flex: 1, width: 'auto' }}
                       >
@@ -396,6 +359,8 @@ const Dashboard = () => {
                     <div style={{ display: 'flex' }}>
                       <Text type="H4" style={{ paddingRight: 16 }}>{item.textLabel}: </Text>
                       <Select
+                        defaultValue={dataTaskTemp?.stepId}
+                        value={dataTaskTemp?.stepId}
                         onChange={(e) => onChangeInput(e, 'stepId')}
                         style={{ flex: 1, width: 'auto' }}
                       >
@@ -416,7 +381,8 @@ const Dashboard = () => {
                     <div style={{ display: 'flex' }}>
                       <Text type="H4" style={{ paddingRight: 16 }}>{item.textLabel}: </Text>
                       <Select
-                        defaultValue={''}
+                        defaultValue={dataTaskTemp?.priorityId}
+                        value={dataTaskTemp?.priorityId}
                         onChange={(e) => onChangeInput(e, 'priorityId')}
                         style={{ flex: 1, width: 'auto' }}
                       >
